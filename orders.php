@@ -152,13 +152,13 @@ require_once("config.php");
     </div>
     <div id="sacnModal"
      class="menu  menu-box-bottom menu-box-detached round-medium"
-     data-menu-height="400"
+     data-menu-height="500"
      data-menu-effect="menu-over">
      <div class="content">
             <h2 class="uppercase ultrabold text-center top-20">QR code Scaner</h2>
             <p class="font-11 under-heading text-center bottom-20">ضع QR code مقابل الكامره</p>
             <p class="font-16 under-heading text-center bottom-20 text-danger" id="err_msg"></p>
-            <video id="preview" style="width: 100%;height: 200px;"></video>
+            <video id="preview" style="width: 100%;height: 300px;"></video>
             <button onclick="close_qr()" class="button bg-brown1-dark button-full button-l shadow-large button-round-small bg-highlight top-20">اغلاق</button>
      </div>
     </div>
