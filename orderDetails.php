@@ -1,4 +1,10 @@
-<!DOCTYPE HTML>
+<?php
+require("php/_access.php");
+access([1,2,4]);
+?>
+<?
+include("config.php");
+?><!DOCTYPE HTML>
 <html lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -28,7 +34,105 @@
 width:5px;
 background-color:#666666;
 }
+ .chatbody {
+  height: 400px;
+  border-bottom:2px solid #D3D3D3;
+  border-radius: 1px;
+  overflow-y: scroll;
+  padding-top:5px;
+  width:100%;
+  margin-top:10px;
+ }
+ .msg {
+   display: block;
+   position: relative;
+   margin-bottom:15px;
+   padding-bottom:10px;
+ }
+ .other{
+   position: relative;
+   margin-left:0px;
+   width:80%;
+   margin-right:auto;
+   text-align: left !important;
+ }
+ .other .content {
+   background-color: #F8F8FF;
+   border-top-right-radius: 5px;
+   border-bottom-right-radius: 5px;
+   text-align: left !important;
+ }
 
+ .mine {
+   position: relative;
+   width:80%;
+   margin-right: 2px;
+   text-align: right;
+ }
+ .mine .content {
+   background-color: #008B8B;
+   color:#F8F8FF;
+   border-top-left-radius: 5px;
+   border-bottom-left-radius: 5px;
+ }
+
+ .content{
+   position: relative;
+   padding:5px;
+   padding-left:15px;
+   padding-right:15px;
+   min-width:10px;
+   max-width:80%;
+   font-size: 16px;
+   color:#000000;
+   margin:0 !important;
+   display: inline-block;
+ }
+.name {
+  position: relative;
+  display: inline-block;
+  font-size:10px;
+  margin-bottom:2px;
+}
+.time {
+  display:inline-block;
+  position: relative;
+  font-size: 10px;
+  color: #696969;
+  margin-top:2px;
+}
+.inputs {
+  margin-bottom:20px;
+}
+.chat-btn:hover{
+  color: #F8F8FF;
+  text-decoration: none;
+}
+
+.chat-btn {
+  display: block;
+  background-color: #F96332;
+  color:#F8F8FF;
+  text-align: center;
+  padding: 2px;
+   box-shadow: 0 5px 30px 0 rgba(0,0,0,.11),0 5px 15px 0 rgba(0,0,0,.08)!important;
+}
+.chat-btn span{
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.input-chat-send {
+  height: 40px !important;
+  border-top-left-radius: 5px !important;
+  border-bottom-left-radius: 5px !important;
+}
+.btn-chat-send {
+  height: 40px;
+  border-top-right-radius: 5px !important;
+  border-bottom-right-radius:5px !important;
+}
 </style>
 </head>
 
@@ -56,6 +160,9 @@ background-color:#666666;
 
     <div class="page-content header-clear-medium">
          <input type="hidden" id="order_id" value="<?php echo $_GET['o']?>">
+         <a href="#" class="chat-btn left-5 right-5 top-5 bottom-5" data-menu="chat" onclick="OrderChat(<?php echo $_GET['o']?>)" class="btn btn-waring btn-full ">
+                <span class="left-5 right-5 top-5 bottom-5">محادثه</span>
+         </a>
          <div class="content-boxed top-5 bottom-5">
            <div class="one-half">
               <div   class="bottom-5 color-white font-20 link-list link-list-1 bg-green1-light rounded">
@@ -236,14 +343,41 @@ background-color:#666666;
 
      </div>
 </div>
+<div id="chat"
+     class="menu  menu-box-bottom menu-box-detached round-medium"
+     data-menu-height="600"
+     data-menu-effect="menu-over">
+        <div class="col-12">
+        <div class="col-12">
+        <div class="row">
+            <div class="col-12 chatbody" id="chatbody">
+
+            </div>
+        </div>
+        <div class="row"><hr /></div>
+          <div class="row">
+            <div class="col-12 padding-none">
+              <div class="input-group">
+                <div class="input-group-append">
+                  <button onclick="sendMessage()" class="btn btn-info btn-chat-send" type="button">ارسال</button>
+                </div>
+                <textarea type="text" id="message" class="form-control input-chat-send" placeholder="اكتب...." aria-label="" aria-describedby="basic-addon2"></textarea>
+
+              </div>
+               <input type="hidden"  id="chat_order_id"/>
+               <input type="hidden" value="0" id="last_msg"/>
+            </div>
+          </div>
+        </div>
+        </div>
+</div>
 <div class="toast rounded-pill toast-bottom" id="toast-success">
     <p class="color-white"><i class='fa fa-sync fa-spin right-10'></i>
       تم التحديث
     </p>
     <div class="toast-bg opacity-90 bg-green2-dark"></div>
 </div>
-
-
+<input type="hidden" id="user_id" value="<?php echo $_SESSION['userid'];?>"/>
 <div class="menu-hider"></div>
 <script type="text/javascript" src="scripts/jquery.js"></script>
 <script type="text/javascript" src="scripts/plugins.js"></script>
@@ -610,6 +744,87 @@ function OrderTracking(id){
      }
    });
 }
+function OrderChat(id,last){
+  if(id != $("#chat_order_id").val()){
+    chat = 1;
+    $("#chatbody").html("");
+  }else{
+    chat = 0;
+  }
+  $("#chat_order_id").val(id);
+
+  $.ajax({
+    url:"php/_getMessages.php",
+    type:"POST",
+    data:{order_id:$("#chat_order_id").val(),last:last},
+    beforeSend:function(){
+
+    },
+    success:function(res){
+       if(res.success == 1){
+         if(res.last <= 0){
+             $("#chatbody").html("");
+         }
+         $.each(res.data,function(){
+            clas = 'other';
+           if(this.is_client == 1){
+                name = this.client_name
+                role = "عميل"
+               if(this.from_id== $("#user_id").val()){
+                 clas = 'mine';
+               }
+           }else{
+               name = this.staff_name
+               if(this.from_id == $("#user_id").val()){
+                 clas = 'mine';
+               }
+             role =  this.role_name;
+           }
+           message =
+           "<div class='row'>"+
+             "<div class='msg "+clas+"' msq-id='"+this.id+"'>"+
+                "<span class='name'>"+name+ " ( "+role+" ) "+"</span><br />"+
+                "<span class='content'>"+this.message+"</span><br />"+
+                "<span class='time'>"+this.date+"</span><br />"+
+             "</div>"+
+           "</div>"
+           $("#chatbody").append(message);
+           $("#last_msg").val(this.id);
+           });
+           $("#chatbody").animate({ scrollTop: $('#chatbody').prop("scrollHeight")}, 100);
+           $("#spiner").remove();
+       }
+      console.log(res);
+    },
+    error:function(e){
+      console.log(e);
+    }
+  });
+}
+function sendMessage(){
+  $.ajax({
+    url:"php/_sendMessage.php",
+    type:"POST",
+    data:{message:$("#message").val(), order_id:$("#chat_order_id").val()},
+    beforeSend:function(){
+      $("#chatbody").append('<div id="spiner" class="spiner"></div>');
+    },
+    success:function(res){
+      OrderChat($("#chat_order_id").val(),$("#last_msg").val());
+      $("#chatbody").animate({ scrollTop: $('#chatbody').prop("scrollHeight")}, 100);
+      $("#message").val("");
+      $("#message").focus();
+      console.log(res);
+    },
+    error:function(e){
+      console.log(e);
+    }
+  });
+}
+var mychatCaller;
+mychatCaller = setInterval(function(){
+  OrderChat($("#chat_order_id").val(),$("#last_msg").val());
+}, 1000);
 OrderTracking($('#order_id').val())
 getorder();
 </script>

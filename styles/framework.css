@@ -2640,7 +2640,7 @@ span.input-style-1-active{padding-right:10px!important; right:auto!important;}
 /*Contact Form*/
 .contact-form{margin-bottom:15px;}
 .menu input[type="text"]{height:35px; line-height:35px;}
-.menu textarea{height:85px!important; padding-top:3px!important;}
+.menu textarea{height:85px; padding-top:3px}
 .menu .form-field{margin-bottom:5px;}
 .menu .form-field label{font-size:12px; margin-bottom:-10px;}
 .form-field span{
