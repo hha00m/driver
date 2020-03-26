@@ -43,3 +43,8 @@ input[type=email],.form_datetime {
  .toast{
   border-radius: 35px !important;
  }
+ .add-button {
+  position: absolute;
+  top: 1px;
+  left: 1px;
+}

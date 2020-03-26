@@ -87,7 +87,7 @@
                 });
             }
         </script>
-   <button style=" position: absolute; top: 1px; left: 1px;">Add to home screen</button>
+<button class="add-button">قم بتحميل التطبيق على موبايلك</button>
 
     </div>
 
