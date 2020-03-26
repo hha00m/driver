@@ -87,7 +87,8 @@
                 });
             }
         </script>
-   
+   <button style=" position: absolute; top: 1px; left: 1px;">Add to home screen</button>
+
     </div>
 
     <script type="text/javascript" src="scripts/jquery.js"></script>
