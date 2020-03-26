@@ -496,10 +496,10 @@ self.__precacheManifest = [
     "url": "notfcation.php",
     "revision": "ea9622e73f111ca1c0ea136c144c2d85"
   },
-  {
-    "url": "orderDetails.php",
-    "revision": "4d5d0a1ae295e0d8c2def2f552a7678c"
-  },
+  // {
+  //   "url": "orderDetails.php",
+  //   "revision": "4d5d0a1ae295e0d8c2def2f552a7678c"
+  // },
   {
     "url": "orders.php",
     "revision": "8d819fa7e9b30b45d43f799cee92bf66"
