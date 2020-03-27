@@ -1,9 +1,9 @@
 module.exports = {
-  "globDirectory": "driver/",
+  "globDirectory": "/",
   "globPatterns": [
     "**/*.{php,css,js,less,txt,yml,json,scss,svg,eot,ttf,woff,woff2,png,gif,ico,db,jpg,xml,zip,webmanifest,md,vcf,TXT,crt,fdf,p12,pdf,ai,BAK,z,icc}"
   ],
-  "swDest": "driver/sw.js",
+  "swDest": "sw.js",
 
    // Define runtime caching rules.
    runtimeCaching: [{
@@ -11,7 +11,7 @@ module.exports = {
     urlPattern: /\.(?:png|jpg|jpeg|svg)$/,
 
     // Apply a cache-first strategy.
-    handler: 'CacheFirst',
+    handler: 'StaleWhileRevalidate',
 
     options: {
       // Use a custom cache name.
@@ -26,7 +26,7 @@ module.exports = {
   {  
 
     urlPattern: /\.css/,
-    handler: 'CacheFirst',
+    handler: 'StaleWhileRevalidate',
 
     options: {
       cacheName: 'css',
@@ -37,7 +37,7 @@ module.exports = {
     },
   }, 
   { urlPattern: /\.php/,
-    handler: 'CacheFirst',
+    handler: 'StaleWhileRevalidate',
   
     options: {
       cacheName: 'php',
@@ -47,7 +47,7 @@ module.exports = {
       },
     },
   },{ urlPattern: /\.js/,
-    handler: 'CacheFirst',
+    handler: 'StaleWhileRevalidate',
   
     options: {
       cacheName: 'js',
