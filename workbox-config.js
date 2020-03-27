@@ -1,9 +1,9 @@
 module.exports = {
-  "globDirectory": "/",
+  "globDirectory": "./",
   "globPatterns": [
     "**/*.{php,css,js,less,txt,yml,json,scss,svg,eot,ttf,woff,woff2,png,gif,ico,db,jpg,xml,zip,webmanifest,md,vcf,TXT,crt,fdf,p12,pdf,ai,BAK,z,icc}"
   ],
-  "swDest": "sw.js",
+  "swDest": "./sw.js",
 
    // Define runtime caching rules.
    runtimeCaching: [{
