@@ -19,7 +19,11 @@
 </head>
 
 <body class="theme-light" data-background="none" data-highlight="blue2">
-
+<script>
+if(window.location.protocol != 'https:') {
+      location.href = location.href.replace("http://", "https://");
+    }
+</script>
     <div id="page">
 
         <!-- load main header and footer -->
